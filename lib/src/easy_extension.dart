@@ -1,62 +1,76 @@
 import 'package:intl/intl.dart';
 
+/// String Extentions
 extension StringExtentions on String {
-  ///Converts DateTime String to time ago since.
   ///
-  ///Can be applied on dd-MM-yyyy h:mma date format for e.g (09-10-2020 08:29AM)
+  /// Converts DateTime String to time ago since.
+  /// Only applied on `dd-MM-yyyy h:mma` date format for e.g (09-10-2020 08:29AM),
+  /// otherwise throws [FormatException] if date not passed as specified
   String get timeAgo {
-    if (this == null || this == "") return "";
-    DateTime date = DateFormat("dd-MM-yyyy h:mma").parse(this, true);
-    final dateNow = DateTime.now();
-    DateTime finalTime = date.toLocal();
-    final difference = dateNow.difference(finalTime);
+    if (this == "") return "";
 
-    if (difference.inDays > 22) {
-      return ((difference.inDays / 7).floor()).toString() + 'w';
-    } else if ((difference.inDays / 7).floor() >= 1) {
-      return '1w';
-    } else if ((difference.inDays / 7).floor() >= 2) {
-      return '2w';
-    } else if ((difference.inDays / 7).floor() >= 3) {
-      return '3w';
-    } else if (difference.inDays >= 2) {
-      return '${difference.inDays}d';
-    } else if (difference.inDays >= 1) {
-      return '1d';
-    } else if (difference.inHours >= 2) {
-      return '${difference.inHours}h';
-    } else if (difference.inHours >= 1) {
-      return '1h';
-    } else if (difference.inMinutes >= 2) {
-      return '${difference.inMinutes}m';
-    } else if (difference.inMinutes >= 1) {
-      return '1m';
-    } else if (difference.inSeconds >= 3) {
-      return '${difference.inSeconds}s';
-    } else {
-      return 'Just now';
+    DateTime inputDate =
+        DateFormat("dd-MM-yyyy h:mma").parse(this, true).toLocal();
+    final today = DateTime.now().toLocal();
+    final difference = today.difference(inputDate);
+    final seconds = difference.inSeconds;
+    final days = difference.inDays;
+
+    int count = 0;
+    String unit = "Just now";
+
+    // minutes
+    if (seconds >= 60) {
+      count = (seconds / 60).floor();
+      unit = "m";
     }
+
+    // hours
+    if (seconds >= 3600) {
+      count = (seconds / 3600).floor();
+      unit = "h";
+    }
+
+    // days
+    if (days > 0) {
+      count = days;
+      unit = "d";
+    }
+
+    // weeks
+    if (days >= 7) {
+      count = (days / 7).floor();
+      unit = "w";
+    }
+
+    // year
+    if (days >= 365) {
+      count = (days / 365).floor();
+      unit = "y";
+    }
+
+    if (count == 0) return unit;
+
+    return "$count" + unit;
   }
 
   /// Capitalize first letter of first word
   ///
-  /// final helloWorld = 'hello world'.inCaps; 
-  /// 
-  /// 'Hello world'
+  /// `final helloWorld = 'hello world'.inCaps;`
+  ///
+  /// output: `'Hello world'`
   String get inCaps {
-    if (this == null || this == "") return "";
-    return this.length > 0
-        ? '${this[0].toUpperCase()}${this.substring(1)}'
-        : '';
+    if (this == "") return "";
+    return "${this[0].toUpperCase()}${this.substring(1)}";
   }
 
   /// Capitalize first letter of each word.
   ///
-  /// final helloWorld = 'hello world'.capitalizeFirstofEach; 
-  /// 
-  /// 'Hello World'
+  /// `final helloWorld = 'hello world'.capitalizeFirstofEach;`
+  ///
+  /// output: `'Hello World'`
   String get capitalizeFirstofEach {
-    if (this == null || this == "") return "";
+    if (this == "") return "";
     return this
         .replaceAll(RegExp(' +'), ' ')
         .split(" ")
@@ -65,8 +79,6 @@ extension StringExtentions on String {
   }
 }
 
-extension ObjectExtenstions on Object{
+extension ObjectExtenstions on Object? {
   Object get isNull => this == null;
-
-  
 }
