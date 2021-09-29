@@ -69,9 +69,9 @@ extension StringExtentions on String {
   ///
   /// Capitalize first letter of each word.
   ///
-  /// `final helloWorld = 'hello world'.capitalizeFirstofEach;`
-  ///
-  /// output: `'Hello World'`
+  /// ```dart
+  /// final helloWorld = 'hello world'.capitalizeFirstofEach // 'Hello World'
+  /// ```
   ///
   String get capitalizeFirstofEach {
     if (this == "") return "";
@@ -81,4 +81,36 @@ extension StringExtentions on String {
         .map((str) => str.inCaps)
         .join(" ");
   }
+
+  ///
+  /// Returns true if the string is proper number.
+  /// \+ and - signs in the beginning of the string are ignored
+  /// ```dart
+  /// "111".isDigit   // true
+  /// "+111".isDigit  // true
+  /// "-111".isDigit  // true
+  /// "abcd".isDigit  // false
+  /// "11-11".isDigit // false
+  /// ```
+  ///
+  bool get isDigit {
+    if (this.isEmpty) return false;
+
+    String s = this;
+
+    // remove positive or negative sign from the string
+    if (this[0] == '+' || this[0] == '-') s = s.removeAtIndex(0);
+
+    for (int i in s.codeUnits) {
+      if (i < 48 || i > 57) return false;
+    }
+
+    return true;
+  }
+
+  ///
+  /// Removes the character at the index, and returns new string
+  ///
+  String removeAtIndex(int index) =>
+      this.substring(0, index) + this.substring(index + 1);
 }

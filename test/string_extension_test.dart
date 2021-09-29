@@ -56,4 +56,21 @@ void main() {
 
   test("testing capitalizeFirstofEach",
       () => expect("hello world".capitalizeFirstofEach, "Hello World"));
+
+  test("testing isDigit", () {
+    expect("actual".isDigit, false);
+    expect("afdf1243".isDigit, false);
+    expect("+234234-".isDigit, false);
+    expect("+345345-345".isDigit, false);
+    expect("+-2348349".isDigit, false);
+    expect("123823498".isDigit, true);
+    expect("-123823498".isDigit, true);
+    expect("+123823498".isDigit, true);
+  });
+
+  test("testing removeAtIndex", () {
+    expect("actual".removeAtIndex(0), "ctual");
+    // expect("actual".removeAtIndex(10), "actual"); // throws error
+    expect("actual".removeAtIndex(3), "actal");
+  });
 }
