@@ -1,3 +1,4 @@
 library easy_extention;
 
-export 'src/easy_extension.dart';
+export 'src/string_extension.dart';
+export 'src/object_extension.dart';

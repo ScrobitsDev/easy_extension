@@ -54,21 +54,25 @@ extension StringExtentions on String {
     return "$count" + unit;
   }
 
+  ///
   /// Capitalize first letter of first word
   ///
   /// `final helloWorld = 'hello world'.inCaps;`
   ///
   /// output: `'Hello world'`
+  ///
   String get inCaps {
     if (this == "") return "";
     return "${this[0].toUpperCase()}${this.substring(1)}";
   }
 
+  ///
   /// Capitalize first letter of each word.
   ///
   /// `final helloWorld = 'hello world'.capitalizeFirstofEach;`
   ///
   /// output: `'Hello World'`
+  ///
   String get capitalizeFirstofEach {
     if (this == "") return "";
     return this
@@ -77,8 +81,4 @@ extension StringExtentions on String {
         .map((str) => str.inCaps)
         .join(" ");
   }
-}
-
-extension ObjectExtenstions on Object? {
-  Object get isNull => this == null;
 }
